@@ -1,6 +1,7 @@
 package com.project.splitwise.service.impl;
 
 import com.project.splitwise.Utils.Utils;
+import com.project.splitwise.aop.ReadOnly;
 import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.UserRequest;
 import com.project.splitwise.entity.User;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @ReadOnly
     public User createUser(UserRequest userRequest) {
         if (Objects.nonNull(userRequest.getReferenceId())) {
             return userRepository.findByReferenceId(userRequest.getReferenceId())
