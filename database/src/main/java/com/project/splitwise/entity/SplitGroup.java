@@ -2,8 +2,11 @@ package com.project.splitwise.entity;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,10 +33,11 @@ public class SplitGroup extends BaseEntity {
     @ManyToMany(mappedBy = "user_groups") // Bi-directional mapping
     Set<User> members;
 
-    @OneToMany
-    List<Expense> expense; // Uni-directional mapping
+    @OneToMany // Uni-directional mapping
+    Map<String, Split> userSplits;
 
-    @OneToMany
-    List<Split> userSplits; // Uni-directional mapping
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true) // Uni-directional mapping
+    @JoinColumn(name = "expense_id")
+    List<Expense> expense;
 
 }

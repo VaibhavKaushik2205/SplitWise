@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "request_details_tracker")
+@Table(name = "request_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,7 +24,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RequestDetailsTracker extends BaseEntity {
+public class RequestDetails extends BaseEntity {
 
     UUID requestId;
     String requestType;
