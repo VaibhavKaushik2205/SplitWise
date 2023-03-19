@@ -3,7 +3,6 @@ package com.project.splitwise.controller;
 import com.project.splitwise.contract.UserRequest;
 import com.project.splitwise.service.UserGroupService;
 import com.project.splitwise.service.UserService;
-import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class SplitWiseController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest) {
-        log.info("createCustomer request received for customer: {}", userRequest.getReferenceId());
+        log.info("createCustomer request received for customer: {}", userRequest.getPhoneNumber());
         return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 

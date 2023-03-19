@@ -1,16 +1,22 @@
 package com.project.splitwise.service.impl;
 
 import com.project.splitwise.Utils.Utils;
+import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.UserRequest;
 import com.project.splitwise.entity.User;
+import com.project.splitwise.exception.BadRequestException;
+import com.project.splitwise.exception.NotFoundException;
 import com.project.splitwise.mapper.UserMapper;
 import com.project.splitwise.repository.UserRepository;
 import com.project.splitwise.service.UserService;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -21,14 +27,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserRequest userRequest) {
-        return userRepository.findByReferenceId(userRequest.getReferenceId())
-            .map(user -> updateUserDetails(user, userRequest))
-            .orElseGet(() -> createNewUser(userRequest));
+        if (Objects.nonNull(userRequest.getReferenceId())) {
+            return userRepository.findByReferenceId(userRequest.getReferenceId())
+                .map(user -> updateUserDetails(user, userRequest))
+                .orElseGet(() -> createNewUser(userRequest));
+        }
+        return createNewUser(userRequest);
     }
 
     @Override
+    @Transactional
     public User updateUser(UserRequest userRequest) {
-        return null;
+        if (Objects.isNull(userRequest.getReferenceId())) {
+            throw new BadRequestException(Errors.USER_ID_MISSING, HttpStatus.BAD_REQUEST);
+        }
+        return userRepository.findByReferenceId(userRequest.getReferenceId())
+            .map(user -> updateUser(userRequest))
+            .orElseThrow(() -> new NotFoundException(Errors.USER_NOT_FOUND,
+                HttpStatus.NOT_FOUND));
     }
 
     @Override
