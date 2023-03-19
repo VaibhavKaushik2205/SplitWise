@@ -1,13 +1,13 @@
 package com.project.splitwise.repository;
 
-import com.project.splitwise.entity.RequestDetailsTracker;
+import com.project.splitwise.entity.RequestDetails;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RequestDetailsRepository extends JpaRepository<RequestDetailsTracker, Long> {
+public interface RequestDetailsRepository extends JpaRepository<RequestDetails, Long> {
 
-    Optional<RequestDetailsTracker> findByRequestIdAndRequestType(UUID requestId, String requestType);
+    Optional<RequestDetails> findByRequestIdAndRequestType(UUID requestId, String requestType);
 }
