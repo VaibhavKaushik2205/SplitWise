@@ -1,9 +1,8 @@
 package com.project.splitwise.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -17,6 +16,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "users")
@@ -40,10 +41,16 @@ public class User extends BaseEntity {
         name = "user_group",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "split_group_id"))
-    Set<SplitGroup> user_groups = new HashSet<>();
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
+    List<SplitGroup> userGroups = new ArrayList<>();
 
     @OneToMany(mappedBy = "id", fetch = FetchType.EAGER) // Uni directional relationship
     List<Split> owedUsers = new ArrayList<>();
+
+    public void addGroup(SplitGroup newGroup) {
+        userGroups.add(newGroup);
+    }
 
     public void addOwesTo(User owedUser, Double amountOwed) {
         // TODO create split
@@ -56,15 +63,4 @@ public class User extends BaseEntity {
 //        userOwesTo.put(owedUser.getId(), amountOwed);
     }
 
-    public void addGroup(SplitGroup group) {
-//        groups.add(group);
-    }
-
-    public void removeGroup(SplitGroup group) {
-//        groups.remove(group);
-    }
-
-    public void removeOwesTo(User user) {
-//        this.userOwesTo.remove(user.getId());
-    }
 }

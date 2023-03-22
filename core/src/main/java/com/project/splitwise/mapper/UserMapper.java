@@ -1,6 +1,6 @@
 package com.project.splitwise.mapper;
 
-import com.project.splitwise.contract.UserRequest;
+import com.project.splitwise.contract.request.UserRequest;
 import com.project.splitwise.entity.User;
 import java.util.Objects;
 import java.util.UUID;

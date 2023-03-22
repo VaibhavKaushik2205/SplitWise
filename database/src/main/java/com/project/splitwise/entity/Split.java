@@ -1,5 +1,6 @@
 package com.project.splitwise.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,6 +33,7 @@ public class Split extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="expense_id", nullable=false) //
+    @JsonBackReference
     Expense expense;
 
 }

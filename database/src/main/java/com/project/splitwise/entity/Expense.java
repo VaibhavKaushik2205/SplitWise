@@ -1,5 +1,6 @@
 package com.project.splitwise.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.splitwise.convertor.ExpenseMetaDataConverter;
 import java.util.List;
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ public class Expense extends BaseEntity {
     Long amount;
 
     @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY) // Bi-directional mapping
+    @JsonManagedReference
     List<Split> splits;
 
     @Convert(converter = ExpenseMetaDataConverter.class) // customer conversion

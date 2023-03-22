@@ -5,6 +5,8 @@ public interface StringConstants {
     interface Errors {
         String USER_NOT_FOUND = "User not found!";
 
+        String GROUP_NOT_FOUND = "Split Group not found!";
+
         String INVALID_STATE_TO_CONTINUE = "Seems like we have hit a wall!";
 
         String INCORRECT_PHONE_NUMBER = "Phone number belongs to a different customer. Invalid "
