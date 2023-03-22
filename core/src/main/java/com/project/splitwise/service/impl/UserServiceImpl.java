@@ -3,7 +3,7 @@ package com.project.splitwise.service.impl;
 import com.project.splitwise.Utils.Utils;
 import com.project.splitwise.aop.ReadOnly;
 import com.project.splitwise.constants.StringConstants.Errors;
-import com.project.splitwise.contract.UserRequest;
+import com.project.splitwise.contract.request.UserRequest;
 import com.project.splitwise.entity.User;
 import com.project.splitwise.exception.BadRequestException;
 import com.project.splitwise.exception.NotFoundException;
@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    @ReadOnly
     public User createUser(UserRequest userRequest) {
         if (Objects.nonNull(userRequest.getReferenceId())) {
             return userRepository.findByReferenceId(userRequest.getReferenceId())
@@ -50,6 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findUserByReferenceId(String referenceId) {
+        return userRepository.findByReferenceId(referenceId);
+    }
+
+    @Override
     public Optional<User> findUserByPhoneNumberAndSource(String phoneNumber, String source) {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
@@ -67,7 +71,7 @@ public class UserServiceImpl implements UserService {
     private User updateUserDetails(User user, UserRequest request) {
         log.info("updating user details as per request for user: {}, referenceId: {}",
             user.getName(), user.getReferenceId());
-        updateExistingEntity(user, request);
+        updateExistingUser(user, request);
         return save(user);
     }
 
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private void updateExistingEntity(User user, UserRequest userRequest) {
+    private void updateExistingUser(User user, UserRequest userRequest) {
         Utils.setIfNotNull(user::setReferenceId, userRequest.getReferenceId());
         Utils.setIfNotNull(user::setName, userRequest.getName());
         Utils.setIfNotNull(user::setPhoneNumber, userRequest.getPhoneNumber());

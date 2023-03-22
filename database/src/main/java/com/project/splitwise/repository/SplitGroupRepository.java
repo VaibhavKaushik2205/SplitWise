@@ -6,9 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GroupRepository extends CrudRepository<SplitGroup, Integer> {
+public interface SplitGroupRepository extends CrudRepository<SplitGroup, Integer> {
 
-    Optional<SplitGroup> findById(Long id);
+    Optional<SplitGroup> findSplitGroupByGroupReferenceId(String groupReferenceId);
 
 //    List<SplitGroup> findByMembers(Long )
 }

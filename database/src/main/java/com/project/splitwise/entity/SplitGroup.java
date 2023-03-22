@@ -1,9 +1,13 @@
 package com.project.splitwise.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -17,6 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "split_group")
@@ -26,18 +32,28 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SplitGroup extends BaseEntity {
+
+    String groupReferenceId;
 
     String nameOfGroup;
 
-    @ManyToMany(mappedBy = "user_groups") // Bi-directional mapping
-    Set<User> members;
+    @ManyToMany(mappedBy = "userGroups") // Bi-directional mapping
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonBackReference
+    List<User> members = new ArrayList<>();
 
-    @OneToMany // Uni-directional mapping
-    Map<String, Split> userSplits;
+    @Column(columnDefinition = "jsonb")
+    String userSplits;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true) // Uni-directional mapping
-    @JoinColumn(name = "expense_id")
+    @JoinColumn(name = "id")
     List<Expense> expense;
+
+    public void addUser(User newMember) {
+        members.add(newMember);
+    }
+
 
 }

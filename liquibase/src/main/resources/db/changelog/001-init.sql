@@ -5,7 +5,7 @@
 create table users
 (
     id                 bigserial primary key,
-    reference_id       uuid not null,
+    reference_id       varchar not null unique,
     name               varchar,
     phone_number       varchar not null,
     email              varchar,
@@ -19,7 +19,7 @@ create table users
 create table user_history
 (
     id                 bigserial primary key,
-    reference_id       uuid not null,
+    reference_id       varchar not null,
     name               varchar,
     phone_number       varchar not null,
     email              varchar,
@@ -29,11 +29,13 @@ create table user_history
 
 create table split_group
 (
-    id                  bigserial primary key,
-    name_of_group       varchar,
-    version             bigint,
-    created_at          timestamp,
-    updated_at          timestamp
+    id                      bigserial primary key,
+    group_reference_id      varchar unique ,
+    name_of_group           varchar,
+    user_splits              jsonb,
+    version                 bigint,
+    created_at              timestamp,
+    updated_at              timestamp
 );
 
 create table user_group
@@ -80,15 +82,6 @@ create table split_group_expense
     foreign key (split_group_id) references split_group
 );
 
-create table split_group_user_splits
-(
-    split_group_id      int8 not null,
-    user_splits_id      int8 not null,
-
-    foreign key (user_splits_id) references split,
-    foreign key (split_group_id) references split_group
-);
-
 -- create table split_group_expense
 -- (
 --     split_group_id      int8 not null,
@@ -131,5 +124,6 @@ create index if not exists user_phone_number_idx on users (phone_number);
 create index if not exists users_email_idx on users (email);
 create index if not exists users_created_at_idx on users  (created_at);
 create index if not exists users_updated_at_idx on users (updated_at);
+create index if not exists group_reference_id_idx on split_group (group_reference_id);
 
 create index if not exists request_details_unique_constraint on request_details (request_id, request_type);

@@ -1,7 +1,6 @@
 package com.project.splitwise.controller;
 
-import com.project.splitwise.contract.UserRequest;
-import com.project.splitwise.service.UserGroupService;
+import com.project.splitwise.contract.request.UserRequest;
 import com.project.splitwise.service.UserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("")
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class SplitWiseController {
+public class UserController {
 
     private final UserService userService;
-
-    private final UserGroupService userGroupService;
 
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest) {
