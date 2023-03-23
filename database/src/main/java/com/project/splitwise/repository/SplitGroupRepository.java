@@ -10,5 +10,4 @@ public interface SplitGroupRepository extends CrudRepository<SplitGroup, Integer
 
     Optional<SplitGroup> findSplitGroupByGroupReferenceId(String groupReferenceId);
 
-//    List<SplitGroup> findByMembers(Long )
 }

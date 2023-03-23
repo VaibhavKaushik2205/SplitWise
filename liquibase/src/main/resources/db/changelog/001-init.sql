@@ -32,7 +32,7 @@ create table split_group
     id                      bigserial primary key,
     group_reference_id      varchar unique ,
     name_of_group           varchar,
-    user_splits              jsonb,
+    user_splits             jsonb,
     version                 bigint,
     created_at              timestamp,
     updated_at              timestamp

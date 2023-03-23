@@ -1,5 +1,6 @@
 package com.project.splitwise.service.impl;
 
+import com.project.splitwise.Utils.CollectionUtil;
 import com.project.splitwise.Utils.Utils;
 import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.request.SplitGroupRequest;
@@ -11,12 +12,8 @@ import com.project.splitwise.service.SplitGroupService;
 import com.project.splitwise.service.UserService;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +55,7 @@ public class SplitGroupServiceImpl implements SplitGroupService {
 
     private SplitGroup updateSplitGroup(SplitGroup splitGroup, SplitGroupRequest groupRequest) {
         Utils.setIfNotNull(splitGroup::setNameOfGroup, groupRequest.getNameOfGroup());
-        addGroupMembers2(splitGroup, groupRequest.getMembers());
+        addGroupMembers(splitGroup, groupRequest.getMembers());
         return splitGroup;
     }
 
@@ -69,34 +66,20 @@ public class SplitGroupServiceImpl implements SplitGroupService {
             .members(Collections.emptyList())
             .build();
         save(splitGroup);
-        addGroupMembers2(splitGroup, groupRequest.getMembers());
+        addGroupMembers(splitGroup, groupRequest.getMembers());
         return splitGroup;
     }
 
     private void addGroupMembers(SplitGroup splitGroup, List<String> members) {
-        for (String userReferenceId : members) {
-            userService.findUserByReferenceId(userReferenceId)
-                .ifPresent(user -> addUserToGroup(user, splitGroup));
-        }
-    }
-
-    private void addGroupMembers2(SplitGroup splitGroup, List<String> members) {
         members.stream()
-            .filter(distinctByKey(userId -> userId))
+            .filter(CollectionUtil.distinctByKey(userReferenceId -> userReferenceId))
             .forEach(userReferenceId ->
                 userService.findUserByReferenceId(userReferenceId)
-                    .ifPresent(user -> addUserToGroup2(user, splitGroup)));
-    }
-
-    private void addUserToGroup(User user, SplitGroup splitGroup) {
-        user.getUserGroups().add(splitGroup);
-        userService.save(user);
-
-//        splitGroup.getMembers().add(user);
+                    .ifPresent(user -> addUserToGroup(user, splitGroup)));
     }
 
     @Transactional
-    private void addUserToGroup2(User user, SplitGroup splitGroup) {
+    private void addUserToGroup(User user, SplitGroup splitGroup) {
         // check if group is already added to user
         boolean isGroupPresent =
             user.getUserGroups().stream()
@@ -111,9 +94,4 @@ public class SplitGroupServiceImpl implements SplitGroupService {
         userService.save(user);
     }
 
-    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-
-        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
 }
