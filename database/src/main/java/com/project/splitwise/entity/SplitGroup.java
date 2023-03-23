@@ -51,9 +51,5 @@ public class SplitGroup extends BaseEntity {
     @JoinColumn(name = "id")
     List<Expense> expense;
 
-    public void addUser(User newMember) {
-        members.add(newMember);
-    }
-
 
 }
