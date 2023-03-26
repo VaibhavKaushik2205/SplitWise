@@ -1,6 +1,7 @@
 package com.project.splitwise.service;
 
 import com.project.splitwise.contract.request.SplitGroupRequest;
+import com.project.splitwise.contract.response.GroupDetailsResponse;
 import com.project.splitwise.entity.SplitGroup;
 import java.util.Optional;
 
@@ -10,7 +11,7 @@ public interface SplitGroupService {
 
     SplitGroup updateGroup(String groupReferenceId, SplitGroupRequest groupRequest);
 
-    Optional<SplitGroup> fetchGroupByReferenceId(String groupReferenceId);
+    Optional<GroupDetailsResponse> fetchGroupByReferenceId(String groupReferenceId);
 
     SplitGroup save(SplitGroup splitGroup);
 }

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.splitwise.entity.Expense;
 import com.project.splitwise.entity.Split;
+import com.project.splitwise.entity.SplitGroup;
 import com.project.splitwise.entity.User;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,11 +30,16 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class UserDetailsResponse {
 
-    String nameOfGroup;
+    String referenceId;
 
-    Set<String> members;
+    String name;
 
-//    Map<String, Split> userSplits;
+    String email;
 
-//    List<Expense> expense;
+    String phoneNumber;
+
+    List<GroupDetailsResponse> userGroups;
+
+//    List<Split> owedUsers = new ArrayList<>();
+
 }
