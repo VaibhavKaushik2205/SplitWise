@@ -1,13 +1,13 @@
 package com.project.splitwise.service.impl;
 
 import com.project.splitwise.Utils.Utils;
-import com.project.splitwise.aop.ReadOnly;
 import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.request.UserRequest;
+import com.project.splitwise.contract.response.UserDetailsResponse;
 import com.project.splitwise.entity.User;
 import com.project.splitwise.exception.BadRequestException;
 import com.project.splitwise.exception.NotFoundException;
-import com.project.splitwise.mapper.UserMapper;
+import com.project.splitwise.mapper.CustomMapper;
 import com.project.splitwise.repository.UserRepository;
 import com.project.splitwise.service.UserService;
 import java.util.Objects;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User createUser(UserRequest userRequest) {
+    public UserDetailsResponse createUser(UserRequest userRequest) {
         if (Objects.nonNull(userRequest.getReferenceId())) {
             return userRepository.findByReferenceId(userRequest.getReferenceId())
                 .map(user -> updateUserDetails(user, userRequest))
@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(UserRequest userRequest) {
+    public UserDetailsResponse updateUser(UserRequest userRequest) {
         if (Objects.isNull(userRequest.getReferenceId())) {
             throw new BadRequestException(Errors.USER_ID_MISSING, HttpStatus.BAD_REQUEST);
         }
         return userRepository.findByReferenceId(userRequest.getReferenceId())
-            .map(user -> updateUser(userRequest))
+            .map(user -> updateUserDetails(user, userRequest))
             .orElseThrow(() -> new NotFoundException(Errors.USER_NOT_FOUND,
                 HttpStatus.NOT_FOUND));
     }
@@ -54,13 +54,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserByPhoneNumberAndSource(String phoneNumber, String source) {
-        return userRepository.findByPhoneNumber(phoneNumber);
+    public Optional<UserDetailsResponse> findUserByPhoneNumberAndSource(String phoneNumber, String source) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+            .map(CustomMapper::map);
     }
 
     @Override
-    public Optional<User> findUserByEmailAndSource(String email, String source) {
-        return userRepository.findByEmail(email);
+    public Optional<UserDetailsResponse> findUserByEmailAndSource(String email, String source) {
+        return userRepository.findByEmail(email)
+            .map(CustomMapper::map);
     }
 
     @Override
@@ -68,19 +70,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    private User updateUserDetails(User user, UserRequest request) {
+    private UserDetailsResponse updateUserDetails(User user, UserRequest request) {
         log.info("updating user details as per request for user: {}, referenceId: {}",
             user.getName(), user.getReferenceId());
         updateExistingUser(user, request);
-        return save(user);
+        return CustomMapper.map(save(user));
     }
 
-    private User createNewUser(UserRequest userRequest) {
+    private UserDetailsResponse createNewUser(UserRequest userRequest) {
 //        TODO : Add validations
         log.info("Creating new user with number: {}, and email: {}",
             userRequest.getPhoneNumber(), userRequest.getEmail());
-        User newUser = UserMapper.map(userRequest);
-        return save(newUser);
+        User newUser = CustomMapper.map(userRequest);
+        return CustomMapper.map(save(newUser));
     }
 
 

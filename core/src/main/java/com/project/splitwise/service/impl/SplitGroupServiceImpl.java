@@ -4,9 +4,11 @@ import com.project.splitwise.Utils.CollectionUtil;
 import com.project.splitwise.Utils.Utils;
 import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.request.SplitGroupRequest;
+import com.project.splitwise.contract.response.GroupDetailsResponse;
 import com.project.splitwise.entity.SplitGroup;
 import com.project.splitwise.entity.User;
 import com.project.splitwise.exception.NotFoundException;
+import com.project.splitwise.mapper.CustomMapper;
 import com.project.splitwise.repository.SplitGroupRepository;
 import com.project.splitwise.service.SplitGroupService;
 import com.project.splitwise.service.UserService;
@@ -44,8 +46,9 @@ public class SplitGroupServiceImpl implements SplitGroupService {
     }
 
     @Override
-    public Optional<SplitGroup> fetchGroupByReferenceId(String groupReferenceId) {
-        return splitGroupRepository.findSplitGroupByGroupReferenceId(groupReferenceId);
+    public Optional<GroupDetailsResponse> fetchGroupByReferenceId(String groupReferenceId) {
+        return splitGroupRepository.findSplitGroupByGroupReferenceId(groupReferenceId)
+            .map(CustomMapper::map);
     }
 
     @Override
