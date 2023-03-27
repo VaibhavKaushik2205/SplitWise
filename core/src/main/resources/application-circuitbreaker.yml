@@ -1,0 +1,27 @@
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowType: ${CB_DEFAULT_SLIDING_WINDOW_TYPE:TIME_BASED}
+      minimumNumberOfCalls: ${CB_DEFAULT_MIN_NO_OF_CALLS:5}
+      slidingWindowSize: ${CB_DEFAULT_SLIDING_WINDOW_SIZE:100}
+      slowCallRateThreshold: ${CB_DEFAULT_SLOW_CALL_RATE_THRESHOLD:50}
+      slowCallDurationThreshold: ${CB_DEFAULT_SLOW_CALL_DURATION_THRESHOLD:5000}
+      #      maxWaitDurationInHalfOpenState: ${CB_DEFAULT_MAX_WAIT_DURATION_IN_HALF_OPEN_STATE:30s}
+      permittedNumberOfCallsInHalfOpenState: ${CB_DEFAULT_PERMITTED_NUM_OF_CALLS_IN_HALF_OPEN_STATE:10}
+      automaticTransitionFromOpenToHalfOpenEnabled: ${CB_DEFAULT_AUTOMATIC_TRANSITION_FROM_OPEN_TO_HALF_OPEN_ENABLED:false}
+      waitDurationInOpenState: ${CB_DEFAULT_WAIT_DURATION_IN_OPEN_STATE:10000}
+      failureRateThreshold: ${CB_DEFAULT_FAILURE_RATE_THRESHOLD:5}
+      eventConsumerBufferSize: ${CB_DEFAULT_EVENT_CONSUMER_BUFFER_SIZE:1}
+      registerHealthIndicator: ${CB_DEFAULT_REGISTER_HEALTH_INDICATOR:false}
+      #      recordExceptions:
+      #        - org.springframework.web.client.HttpServerErrorException
+      #        - java.io.IOException
+      #        - java.util.concurrent.TimeoutException
+      #        - com.navi.medici.federationlayer.exception.InvalidPayloadException
+      ignoreExceptions: ${CB_DEFAULT_IGNORE_EXCEPTIONS:}
+  #    someShared:
+  #      slidingWindowSize: 50
+  #      permittedNumberOfCallsInHalfOpenState: 10
+#  instances:
+#    PaymentServiceImpl_getPaymentSyncResponse:
+#      baseConfig: default
