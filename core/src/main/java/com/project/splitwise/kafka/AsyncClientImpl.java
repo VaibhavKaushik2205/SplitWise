@@ -1,6 +1,6 @@
 package com.project.splitwise.kafka;
 
-import com.project.splitwise.Utils.JacksonUtils;
+import com.project.splitwise.utils.JacksonUtils;
 import com.project.splitwise.constants.Constants.KafkaRequestHeaders;
 import java.util.Optional;
 import java.util.UUID;

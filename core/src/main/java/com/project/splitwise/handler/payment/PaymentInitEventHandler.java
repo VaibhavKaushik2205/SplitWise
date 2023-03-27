@@ -1,6 +1,6 @@
 package com.project.splitwise.handler.payment;
 
-import com.project.splitwise.Utils.JacksonUtils;
+import com.project.splitwise.utils.JacksonUtils;
 import com.project.splitwise.contract.request.InitiatePaymentRequest;
 import com.project.splitwise.kafka.AsyncReplyStatus;
 import com.project.splitwise.kafka.KafkaHelper;

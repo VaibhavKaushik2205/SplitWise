@@ -1,4 +1,4 @@
-package com.project.splitwise.Utils;
+package com.project.splitwise.utils;
 
 import java.util.Objects;
 import java.util.function.Consumer;

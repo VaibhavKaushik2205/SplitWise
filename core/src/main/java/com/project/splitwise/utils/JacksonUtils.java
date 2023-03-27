@@ -1,4 +1,4 @@
-package com.project.splitwise.Utils;
+package com.project.splitwise.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;

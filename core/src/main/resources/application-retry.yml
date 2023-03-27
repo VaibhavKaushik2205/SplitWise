@@ -1,0 +1,17 @@
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: ${RETRY_DEFAULT_MAX_ATTEMPTS:4}
+      waitDuration: ${RETRY_DEFAULT_WAIT_DURATION:20ms}
+      enableExponentialBackoff: ${RETRY_DEFAULT_ENABLE_EXPONENTIAL_BACKOFF:false}
+      exponentialBackoffMultiplier: ${RETRY_DEFAULT_EXPONENTIAL_BACKOFF_MULTIPLIER:2}
+      #      retryExceptions:
+      #        - org.springframework.web.client.HttpServerErrorException
+      #        - java.io.IOException
+      #        - java.util.concurrent.TimeoutException
+      ignoreExceptions: ${RETRY_DEFAULT_IGNORE_EXCEPTIONS:}
+#  instances:
+#    PaymentServiceImpl_getPaymentSyncResponse:
+#      baseConfig: default
+#      maxAttempts: ${RETRY_PAYMENT_STATUS_MAX_ATTEMPTS:3}
+

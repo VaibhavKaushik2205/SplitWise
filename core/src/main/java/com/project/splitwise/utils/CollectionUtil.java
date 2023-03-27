@@ -1,4 +1,4 @@
-package com.project.splitwise.Utils;
+package com.project.splitwise.utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -1,6 +1,6 @@
 package com.project.splitwise.service.impl;
 
-import com.project.splitwise.Utils.Utils;
+import com.project.splitwise.utils.Utils;
 import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.request.UserRequest;
 import com.project.splitwise.contract.response.UserDetailsResponse;
