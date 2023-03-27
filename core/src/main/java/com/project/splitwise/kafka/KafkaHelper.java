@@ -9,6 +9,7 @@ import com.project.splitwise.service.RequestDetailsService;
 import com.project.splitwise.validators.DataValidator;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,32 @@ public class KafkaHelper {
 
     private final AsyncClient asyncClient;
     private final RequestDetailsService requestDetailsService;
+
+    public void dispatchAsyncRequestWithTracker(String correlationId, String requestType,
+        String payload, String submissionTopic, String replyTopic) {
+        requestDetailsService.fetchByRequestIdAndRequestType(UUID.fromString(correlationId), requestType)
+            .ifPresentOrElse(requestDetail -> {
+                log.info("dispatching async request for correlationId: {} and request type: {}",
+                    correlationId, requestType);
+                buildAndDispatchAsyncRequest(correlationId, requestType, payload,
+                    submissionTopic, replyTopic);
+            }, () -> log.info("Failed dispatching async request for correlationId: {} and requestType: {}",
+                correlationId, requestType));
+    }
+
+    public void dispatchAsyncReplyWithTracker(String correlationId, String requestType,
+        String payload, AsyncReplyStatus status, Errors errors) {
+        requestDetailsService.fetchByRequestIdAndRequestType(UUID.fromString(correlationId), requestType)
+            .ifPresentOrElse(requestDetail -> {
+                log.info("dispatching async reply for correlationId: {} and request type: {}",
+                    correlationId, requestType);
+                buildAndDispatchAsyncReply(correlationId, requestType, payload,
+                    requestDetail.getReplyTopic(), status, errors);
+                requestDetail.setStatus(getProcessingStatus(status));
+                requestDetailsService.save(requestDetail);
+            }, () -> log.warn("Failed dispatching async reply for correlationId: {} and requestType: {}",
+                correlationId, requestType));
+    }
 
     public void buildAndDispatchAsyncRequest(String correlationId, String requestType, String payload,
         String submissionTopic, String replyTopic) {
@@ -73,6 +100,10 @@ public class KafkaHelper {
         return errors;
     }
 
+    private ProcessingStatus getProcessingStatus(AsyncReplyStatus status) {
+        return AsyncReplyStatus.SUCCESS.equals(status) ? ProcessingStatus.SUCCESS :
+            ProcessingStatus.FAILED;
+    }
 
     private AsyncReplyStatus getAsyncReplyStatus(ProcessingStatus status) {
         return ProcessingStatus.SUCCESS.equals(status) ? AsyncReplyStatus.SUCCESS :

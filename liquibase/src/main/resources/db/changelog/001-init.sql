@@ -101,7 +101,7 @@ create table request_details
     request_type           varchar,
     reply_topic            varchar,
     status                 varchar,
-    data                   jsonb,
+    payload                jsonb,
     version                bigint,
     created_at             timestamp,
     updated_at             timestamp,
