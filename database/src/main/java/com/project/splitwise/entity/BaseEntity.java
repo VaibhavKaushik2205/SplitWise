@@ -1,7 +1,3 @@
-/*
- * Copyright 2021 by Navi Technologies Private Limited
- * All rights reserved. Strictly confidential.
- */
 
 package com.project.splitwise.entity;
 

@@ -17,7 +17,6 @@ resilience4j.circuitbreaker:
       #        - org.springframework.web.client.HttpServerErrorException
       #        - java.io.IOException
       #        - java.util.concurrent.TimeoutException
-      #        - com.navi.medici.federationlayer.exception.InvalidPayloadException
       ignoreExceptions: ${CB_DEFAULT_IGNORE_EXCEPTIONS:}
   #    someShared:
   #      slidingWindowSize: 50
