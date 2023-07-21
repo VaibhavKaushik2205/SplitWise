@@ -50,7 +50,7 @@ create table expense
 (
     id                  bigserial primary key,
     user_id             bigint,
-    amount              bigint,
+    amount              decimal,
     meta_data           jsonb,
     version             bigint,
     created_at          timestamp,
@@ -62,7 +62,7 @@ create table expense
 create table split
 (
     id                    bigserial primary key,
-    amount                bigint,
+    amount                decimal,
     user_name             varchar,
     user_reference_id     uuid,
     expense_id            bigint not null,
@@ -120,10 +120,10 @@ create table revinfo
 
 CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START 1;
 create index if not exists user_reference_id_idx on users (reference_id);
-create index if not exists user_phone_number_idx on users (phone_number);
-create index if not exists users_email_idx on users (email);
-create index if not exists users_created_at_idx on users  (created_at);
+create unique index if not exists user_phone_number_idx on users (phone_number);
+create unique index if not exists users_email_idx on users (email);
+create index if not exists users_created_at_idx on users (created_at);
 create index if not exists users_updated_at_idx on users (updated_at);
-create index if not exists group_reference_id_idx on split_group (group_reference_id);
+create unique index if not exists group_reference_id_idx on split_group (group_reference_id);
 
 create index if not exists request_details_unique_constraint on request_details (request_id, request_type);

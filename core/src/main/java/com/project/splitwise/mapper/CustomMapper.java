@@ -6,6 +6,8 @@ import com.project.splitwise.contract.response.GroupDetailsResponse.GroupMember;
 import com.project.splitwise.contract.response.UserDetailsResponse;
 import com.project.splitwise.entity.SplitGroup;
 import com.project.splitwise.entity.User;
+
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +23,7 @@ public class CustomMapper {
             .email(userRequest.getEmail())
             .phoneNumber(userRequest.getPhoneNumber())
             .name(userRequest.getName())
+            .userGroups(new ArrayList<>())
             .build();
     }
 

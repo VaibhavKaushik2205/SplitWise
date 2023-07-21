@@ -2,6 +2,8 @@ package com.project.splitwise.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.splitwise.convertor.ExpenseMetaDataConverter;
+
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -31,7 +33,7 @@ public class Expense extends BaseEntity {
     @JoinColumn(name="user_id")
     User paidBy;
 
-    Long amount;
+    BigDecimal amount;
 
     @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY) // Bi-directional mapping
     @JsonManagedReference
@@ -40,5 +42,9 @@ public class Expense extends BaseEntity {
     @Convert(converter = ExpenseMetaDataConverter.class) // customer conversion
     @Column(columnDefinition = "jsonb")
     ExpenseMetaData metaData;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Uni-directional mapping
+    @JoinColumn(name="group_id")
+    SplitGroup group;
 
 }

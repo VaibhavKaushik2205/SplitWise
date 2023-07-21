@@ -20,6 +20,6 @@ public class UserRequest {
     String name;
     @NotBlank(message = "Phone number cannot be blank")
     String phoneNumber;
-    @NotBlank(message = "Phone number cannot be blank")
+    @NotBlank(message = "email cannot be blank")
     String email;
 }

@@ -1,6 +1,8 @@
 package com.project.splitwise.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +31,7 @@ public class Split extends BaseEntity {
 
     String userName;
 
-    Long amount;
+    BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="expense_id", nullable=false) //
