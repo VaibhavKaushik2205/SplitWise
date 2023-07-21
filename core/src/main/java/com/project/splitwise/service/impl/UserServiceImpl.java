@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDetailsResponse createUser(UserRequest userRequest) {
         if (Objects.nonNull(userRequest.getReferenceId())) {
             return userRepository.findByReferenceId(userRequest.getReferenceId())
@@ -38,11 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDetailsResponse updateUser(UserRequest userRequest) {
-        if (Objects.isNull(userRequest.getReferenceId())) {
-            throw new BadRequestException(Errors.USER_ID_MISSING, HttpStatus.BAD_REQUEST);
-        }
-        return userRepository.findByReferenceId(userRequest.getReferenceId())
+    public UserDetailsResponse updateUser(String referenceId, UserRequest userRequest) {
+        return userRepository.findByReferenceId(referenceId)
             .map(user -> updateUserDetails(user, userRequest))
             .orElseThrow(() -> new NotFoundException(Errors.USER_NOT_FOUND,
                 HttpStatus.NOT_FOUND));
@@ -78,7 +76,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDetailsResponse createNewUser(UserRequest userRequest) {
-//        TODO : Add validations
         log.info("Creating new user with number: {}, and email: {}",
             userRequest.getPhoneNumber(), userRequest.getEmail());
         User newUser = CustomMapper.map(userRequest);

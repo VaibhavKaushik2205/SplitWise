@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserDetailsResponse createUser (UserRequest userRequest);
+    UserDetailsResponse createUser(UserRequest userRequest);
 
-    UserDetailsResponse updateUser (UserRequest userRequest);
+    UserDetailsResponse updateUser(String referenceId, UserRequest userRequest);
 
     Optional<User> findUserByReferenceId(String referenceId);
 
