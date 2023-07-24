@@ -49,14 +49,15 @@ create table user_group
 create table expense
 (
     id                  bigserial primary key,
-    user_id             bigint,
+    paid_by             bigint,
+    group_id            bigint,
     amount              decimal,
     meta_data           jsonb,
     version             bigint,
     created_at          timestamp,
     updated_at          timestamp,
 
-    foreign key (user_id) references users
+    foreign key (paid_by) references users
 );
 
 create table split
@@ -64,7 +65,7 @@ create table split
     id                    bigserial primary key,
     amount                decimal,
     user_name             varchar,
-    user_reference_id     uuid,
+    user_reference_id     varchar,
     expense_id            bigint not null,
     version               bigint,
     created_at            timestamp,

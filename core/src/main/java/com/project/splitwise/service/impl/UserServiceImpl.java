@@ -5,9 +5,8 @@ import com.project.splitwise.constants.StringConstants.Errors;
 import com.project.splitwise.contract.request.UserRequest;
 import com.project.splitwise.contract.response.UserDetailsResponse;
 import com.project.splitwise.entity.User;
-import com.project.splitwise.exception.BadRequestException;
 import com.project.splitwise.exception.NotFoundException;
-import com.project.splitwise.mapper.CustomMapper;
+import com.project.splitwise.mapper.MapperUtil;
 import com.project.splitwise.repository.UserRepository;
 import com.project.splitwise.service.UserService;
 import java.util.Objects;
@@ -54,13 +53,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDetailsResponse> findUserByPhoneNumberAndSource(String phoneNumber, String source) {
         return userRepository.findByPhoneNumber(phoneNumber)
-            .map(CustomMapper::map);
+            .map(MapperUtil::map);
     }
 
     @Override
     public Optional<UserDetailsResponse> findUserByEmailAndSource(String email, String source) {
         return userRepository.findByEmail(email)
-            .map(CustomMapper::map);
+            .map(MapperUtil::map);
     }
 
     @Override
@@ -72,14 +71,14 @@ public class UserServiceImpl implements UserService {
         log.info("updating user details as per request for user: {}, referenceId: {}",
             user.getName(), user.getReferenceId());
         updateExistingUser(user, request);
-        return CustomMapper.map(save(user));
+        return MapperUtil.map(save(user));
     }
 
     private UserDetailsResponse createNewUser(UserRequest userRequest) {
         log.info("Creating new user with number: {}, and email: {}",
             userRequest.getPhoneNumber(), userRequest.getEmail());
-        User newUser = CustomMapper.map(userRequest);
-        return CustomMapper.map(save(newUser));
+        User newUser = MapperUtil.map(userRequest);
+        return MapperUtil.map(save(newUser));
     }
 
 

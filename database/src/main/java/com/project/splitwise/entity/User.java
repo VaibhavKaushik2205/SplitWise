@@ -1,6 +1,7 @@
 package com.project.splitwise.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -52,15 +53,9 @@ public class User extends BaseEntity {
         userGroups.add(newGroup);
     }
 
-    public void addOwesTo(User owedUser, Double amountOwed) {
+    public void addOrUpdateUserSplits(Split newSplit) {
         // TODO create split
-
-//        if (userOwesTo.containsKey(owedUser.getId())) {
-//            Double newAmountOwed = userOwesTo.get(owedUser.getId()) + amountOwed;
-//            userOwesTo.put(owedUser.getId(), newAmountOwed);
-//            return;
-//        }
-//        userOwesTo.put(owedUser.getId(), amountOwed);
+        owedUsers.add(newSplit);
     }
 
 }
