@@ -27,11 +27,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Split extends BaseEntity {
 
-    UUID userReferenceId;
+    String userReferenceId;
 
     String userName;
 
-    BigDecimal amount;
+    Double amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="expense_id", nullable=false) //

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class CustomMapper {
+public class MapperUtil {
 
     public User map(UserRequest userRequest) {
         return User.builder()
@@ -34,7 +34,7 @@ public class CustomMapper {
             .email(user.getEmail())
             .phoneNumber(user.getPhoneNumber())
             .userGroups(user.getUserGroups().stream()
-                .map(CustomMapper::map).collect(Collectors.toList()))
+                .map(MapperUtil::map).collect(Collectors.toList()))
             .build();
     }
 
@@ -42,7 +42,7 @@ public class CustomMapper {
         return GroupDetailsResponse.builder()
             .nameOfGroup(splitGroup.getNameOfGroup())
             .members(splitGroup.getMembers().stream()
-                .map(CustomMapper::addGroupMember).collect(Collectors.toList()))
+                .map(MapperUtil::addGroupMember).collect(Collectors.toList()))
             .build();
     }
 

@@ -8,7 +8,7 @@ import com.project.splitwise.contract.response.GroupDetailsResponse;
 import com.project.splitwise.entity.SplitGroup;
 import com.project.splitwise.entity.User;
 import com.project.splitwise.exception.NotFoundException;
-import com.project.splitwise.mapper.CustomMapper;
+import com.project.splitwise.mapper.MapperUtil;
 import com.project.splitwise.repository.SplitGroupRepository;
 import com.project.splitwise.service.SplitGroupService;
 import com.project.splitwise.service.UserService;
@@ -45,10 +45,14 @@ public class SplitGroupServiceImpl implements SplitGroupService {
             .orElseThrow(() -> new NotFoundException(Errors.GROUP_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
+    public Optional<SplitGroup> findByReferenceId(String groupReferenceId) {
+        return splitGroupRepository.findSplitGroupByGroupReferenceId(groupReferenceId);
+    }
+
     @Override
-    public Optional<GroupDetailsResponse> fetchGroupByReferenceId(String groupReferenceId) {
+    public Optional<GroupDetailsResponse> findGroupByReferenceId(String groupReferenceId) {
         return splitGroupRepository.findSplitGroupByGroupReferenceId(groupReferenceId)
-            .map(CustomMapper::map);
+            .map(MapperUtil::map);
     }
 
     @Override

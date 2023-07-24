@@ -11,7 +11,9 @@ public interface SplitGroupService {
 
     SplitGroup updateGroup(String groupReferenceId, SplitGroupRequest groupRequest);
 
-    Optional<GroupDetailsResponse> fetchGroupByReferenceId(String groupReferenceId);
+    Optional<SplitGroup> findByReferenceId(String groupReferenceId);
+
+    Optional<GroupDetailsResponse> findGroupByReferenceId(String groupReferenceId);
 
     SplitGroup save(SplitGroup splitGroup);
 }

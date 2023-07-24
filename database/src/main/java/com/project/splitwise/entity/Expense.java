@@ -1,5 +1,6 @@
 package com.project.splitwise.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.splitwise.convertor.ExpenseMetaDataConverter;
 
@@ -30,21 +31,23 @@ import lombok.experimental.FieldDefaults;
 public class Expense extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY) // Uni-directional mapping
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="paid_by")
+    @JsonBackReference
     User paidBy;
 
-    BigDecimal amount;
+    Double amount;
 
     @OneToMany(mappedBy = "expense", fetch = FetchType.LAZY) // Bi-directional mapping
     @JsonManagedReference
     List<Split> splits;
 
-    @Convert(converter = ExpenseMetaDataConverter.class) // customer conversion
+    @Convert(converter = ExpenseMetaDataConverter.class) // MetaData Conversion
     @Column(columnDefinition = "jsonb")
     ExpenseMetaData metaData;
 
     @ManyToOne(fetch = FetchType.LAZY) // Uni-directional mapping
     @JoinColumn(name="group_id")
+    @JsonBackReference
     SplitGroup group;
 
 }
