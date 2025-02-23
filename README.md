@@ -96,3 +96,53 @@ mvn spring-boot:run
 ```
 
 The application will be available at http://localhost:8080.
+
+
+## How to Use
+
+Below are examples of how to interact with the SplitWise application using its RESTful API:
+
+---
+
+### 1. **Create a User**
+- **Endpoint**: `POST /user`
+- **Request**:
+```
+{
+    "referenceId": "user123",
+    "name": "John Doe",
+    "phoneNumber": "1234567890",
+    "email": "john@example.com"
+}
+```
+
+### 2. **Create a Group**
+- **Endpoint**: `POST /split-group`
+- **Request**:
+```
+{
+  "nameOfGroup": "Trip to Europe",
+  "members": ["user123", "user456", "user789"]
+}
+```
+
+### 3. **Create an Expense**
+- **Endpoint**: `POST /expense`
+- **Request**:
+```
+{
+  "payingUser": "user123",
+  "amount": 100.0,
+  "splitType": "EQUAL",
+  "userSplits": [
+    { "userId": "user123", "amount": 33.33 },
+    { "userId": "user456", "amount": 33.33 },
+    { "userId": "user789", "amount": 33.33 }
+  ],
+  "expenseMetadata": {
+    "description": "Dinner",
+    "notes": "Paid by John"
+  },
+  "groupReferenceId": "group123"
+}
+```
