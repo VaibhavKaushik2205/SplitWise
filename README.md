@@ -23,6 +23,15 @@ SplitWise is a Spring Boot-based application that mimics the functionality of th
 5. **Resilience4j for Fault Tolerance**:
    - Implements **retry logic** to handle transient failures (e.g., database connection issues).
    - Uses **circuit breaker** to prevent cascading failures and degrade gracefully during high load or failures.
+  
+### SplitType
+- `EQUAL_SPLIT`: Split the amount equally among all users.
+- `EXACT_SPLIT`: Split the amount by the exact amount provided for all users.
+- `PERCENT_SPLIT`: Split the amount according to the percentage provided among all users.
+
+### ExpenseMetadata
+- `description`: A brief description of the expense.
+- `notes`: Additional notes about the expense.
 
 ## Technologies Used
 
